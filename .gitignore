@@ -1,0 +1,45 @@
+# datos crudos / privados / pesados
+data/*
+!data/audio/
+data/audio/*
+!data/audio/.gitkeep
+
+output/*
+!output/.gitkeep
+
+partido/
+
+# entornos
+.venv/
+.venv-win/
+.venv-test/
+venv/
+env/
+.env/
+
+# caches Python / tests
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# modelos, caches y artefactos generados
+*.nemo
+.cache/
+cache/
+nemo_experiments/
+lightning_logs/
+wandb/
+pred_rttms/
+speaker_outputs/
+vad_outputs/
+*.frame
+*.median
+*.pkl
+*.rttm
+
+# sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,49 @@
+# ============================================================================
+# Dependencias del pipeline local de transcripcion + diarizacion.
+#
+# Windows nativo:
+#
+#   powershell -ExecutionPolicy Bypass -File scripts/setup_windows.ps1
+#
+# Instalacion manual equivalente:
+#
+#   uv python install 3.11
+#   uv venv --python 3.11 .venv-win
+#   .\.venv-win\Scripts\Activate.ps1
+#   uv pip install torch==2.3.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+#   uv pip install -r requirements.txt
+#
+# Torch/Torchaudio no se fijan aqui. Instalalos antes con la build CUDA/CPU adecuada.
+# Python recomendado: 3.11. No uses el Python global 3.14 para este stack.
+# ffmpeg/ffprobe deben estar instalados en Windows y visibles en PATH.
+# ============================================================================
+
+# NeMo: VAD MarbleNet, embeddings TitaNet-large y clustering espectral.
+nemo_toolkit[asr]>=2.0.0,<2.5.0
+
+# Dependencias ASR que NeMo usa y que se precargan en Windows para estabilizar
+# imports nativos de pyarrow/datasets/transformers.
+pyarrow>=15.0
+datasets>=2.18
+transformers>=4.40
+
+# Whisper local optimizado con CTranslate2.
+faster-whisper>=1.0.0
+
+# Interfaz web.
+gradio>=4.0.0
+
+# Datos y audio.
+pandas>=2.0
+soundfile>=0.12
+librosa>=0.10
+
+# Configuracion usada por NeMo.
+omegaconf>=2.3
+hydra-core>=1.3
+
+# Utilidades.
+tqdm>=4.66
+
+# Tests.
+pytest>=8.0

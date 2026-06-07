@@ -1,0 +1,8 @@
+=== Conversacion de ejemplo ===
+Hablantes: Usuario 1 = speaker_0, Usuario 2 = speaker_1
+
+[0:00:00] Usuario 1: Hola, revisemos el estado del pedido.
+
+[0:00:03] Usuario 2: Claro, tengo la informacion en pantalla.
+
+[0:00:05] Usuario 1: Perfecto, confirma la fecha de entrega.

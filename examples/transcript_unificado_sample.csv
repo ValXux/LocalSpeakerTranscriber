@@ -1,0 +1,4 @@
+speaker_global,start_global,end_global,text,source_csv,speaker_local_original,overlap_confidence
+speaker_0,0.000,2.500,"Hola, revisemos el estado del pedido.",,,1.0
+speaker_1,2.700,5.100,"Claro, tengo la informacion en pantalla.",,,1.0
+speaker_0,5.400,7.200,"Perfecto, confirma la fecha de entrega.",,,1.0

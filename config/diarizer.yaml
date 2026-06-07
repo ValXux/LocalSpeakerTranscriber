@@ -1,0 +1,78 @@
+# Config del cascaded clustering diarizer de NeMo.
+# VAD (MarbleNet multilingüe) -> embeddings (TitaNet-large) -> clustering espectral.
+# Basado en NeMo examples/speaker_tasks/diarization/conf/inference/diar_infer_meeting.yaml
+# (variante "meeting": multiscale + clustering, buena para nº de hablantes DESCONOCIDO).
+#
+# Los model_path son nombres de modelos pretrained de NGC/HF: NeMo los descarga
+# solos en la primera corrida (.from_pretrained).
+#
+# diarize.py sobreescribe en tiempo de ejecución:
+#   device, batch_size, diarizer.manifest_filepath, diarizer.out_dir,
+#   diarizer.clustering.parameters.{max_num_speakers,oracle_num_speakers}
+
+name: "ClusterDiarizer"
+
+num_workers: 1
+sample_rate: 16000
+batch_size: 16          # bajo a propósito: GPUs de 4 GB (RTX 3050) hacen OOM con 64
+device: null            # lo fija diarize.py (cuda/cpu)
+verbose: true
+
+diarizer:
+  manifest_filepath: ???     # lo inyecta diarize.py
+  out_dir: ???               # lo inyecta diarize.py
+  oracle_vad: false          # usamos el VAD (MarbleNet), no segmentos oráculo
+  collar: 0.25               # tolerancia al puntuar/colapsar fronteras
+  ignore_overlap: true       # no intentamos separar habla solapada en el RTTM
+
+  vad:
+    model_path: vad_multilingual_marblenet   # multilingüe -> sirve para español
+    external_vad_manifest: null
+    parameters:
+      window_length_in_sec: 0.63
+      shift_length_in_sec: 0.01
+      smoothing: "median"
+      overlap: 0.5
+      onset: 0.5
+      offset: 0.3
+      pad_onset: 0.2
+      pad_offset: 0.2
+      min_duration_on: 0.5
+      min_duration_off: 0.5
+      filter_speech_first: true
+
+  speaker_embeddings:
+    model_path: titanet_large                 # identifica por características de voz
+    parameters:
+      # ventana multiescala: captura tanto detalle corto como contexto largo
+      window_length_in_sec: [1.5, 1.25, 1.0, 0.75, 0.5]
+      shift_length_in_sec: [0.75, 0.625, 0.5, 0.375, 0.25]
+      multiscale_weights: [1, 1, 1, 1, 1]
+      save_embeddings: true
+
+  clustering:
+    parameters:
+      oracle_num_speakers: false   # diarize.py lo pone true si pasas --num-speakers
+      max_num_speakers: 20         # tope superior; el clustering decide el real
+      enhanced_count_thres: 80
+      max_rp_threshold: 0.25
+      sparse_search_volume: 30
+      maj_vote_spk_count: false
+
+  # ---- secciones para el diarizador NEURAL (MSDD). No se usan en clustering puro;
+  #      se dejan deshabilitadas para no exigir descargas extra. ----
+  msdd_model:
+    model_path: null
+    parameters:
+      use_speaker_model_from_ckpt: true
+      infer_batch_size: 25
+      sigmoid_threshold: [0.7]
+      seq_eval_mode: false
+      split_infer: true
+      diar_window_length: 50
+      overlap_infer_spk_limit: 5
+
+  asr:
+    model_path: null    # NO transcribimos con NeMo: reusamos el texto de Google STT
+    parameters:
+      asr_based_vad: false
