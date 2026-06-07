@@ -72,7 +72,7 @@ where ffmpeg
 where ffprobe
 nvidia-smi
 python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
-python -m src.cli --help
+python -m transcripcion.cli --help
 ```
 
 Si necesitas instalar sin GPU NVIDIA:
@@ -94,7 +94,7 @@ data/audio/mi_audio.mp3
 Primero corre un smoke test corto:
 
 ```powershell
-python -m src.cli smoke `
+python -m transcripcion.cli smoke `
   --audio data/audio/mi_audio.mp3 `
   --seconds 120 `
   --out output/smoke `
@@ -106,7 +106,7 @@ python -m src.cli smoke `
 Luego corre el audio completo:
 
 ```powershell
-python -m src.cli run `
+python -m transcripcion.cli run `
   --audio data/audio/mi_audio.mp3 `
   --out output `
   --model medium `
@@ -117,7 +117,7 @@ python -m src.cli run `
 Si sabes cuantas personas hablan, fuerza ese numero para mejorar el clustering:
 
 ```powershell
-python -m src.cli run `
+python -m transcripcion.cli run `
   --audio data/audio/mi_audio.mp3 `
   --out output `
   --model medium `
@@ -176,9 +176,9 @@ porque el texto viene de Whisper, no de CSVs externos.
 ## Comandos disponibles
 
 ```powershell
-python -m src.cli --help
-python -m src.cli run --help
-python -m src.cli smoke --help
+python -m transcripcion.cli --help
+python -m transcripcion.cli run --help
+python -m transcripcion.cli smoke --help
 ```
 
 Subcomandos:
@@ -202,7 +202,7 @@ NeMo solo provee `speaker_global` consistente y el texto sale de los CSVs.
 Ejemplo:
 
 ```powershell
-python -m src.cli align `
+python -m transcripcion.cli align `
   --rttm output/diarization.rttm `
   --transcripts partido/transcripts/csv `
   --offsets config/chunk_offsets.json `
@@ -215,7 +215,7 @@ CSVs vienen de chunks separados y cada archivo empieza en tiempo `0`.
 Para regenerar offsets desde chunks:
 
 ```powershell
-python -m src.cli offsets `
+python -m transcripcion.cli offsets `
   --chunks data/audio/chunks `
   --out config/chunk_offsets.json
 ```
@@ -232,9 +232,9 @@ python -m pytest -q
 Tambien valida que el CLI cargue correctamente:
 
 ```powershell
-python -m src.cli --help
-python -m src.cli run --help
-python -m src.cli smoke --help
+python -m transcripcion.cli --help
+python -m transcripcion.cli run --help
+python -m transcripcion.cli smoke --help
 ```
 
 ## Troubleshooting
@@ -251,7 +251,7 @@ python -m src.cli smoke --help
 - `ffmpeg` o `ffprobe` no existe: instala ffmpeg para Windows y confirma con
   `where ffmpeg` y `where ffprobe`.
 - `OMP: Error #15` o `libiomp5md.dll already initialized`: el paquete activa en
-  Windows `KMP_DUPLICATE_LIB_OK=TRUE` al iniciar `src` para permitir que
+  Windows `KMP_DUPLICATE_LIB_OK=TRUE` al iniciar `transcripcion` para permitir que
   Torch/CTranslate2/NeMo convivan en el mismo proceso.
 - `PicklingError` de `SpeechLabelEntity` en NeMo: en Windows el codigo fuerza
   `num_workers=0` para evitar multiprocessing en el DataLoader.
@@ -269,7 +269,12 @@ NeMo correctamente.
 ## Estructura
 
 ```text
-src/
+app.py             launcher de la interfaz web
+requirements.txt   dependencias Python
+scripts/
+  setup_windows.ps1 instalacion recomendada en Windows
+  setup_wsl.sh      fallback para WSL
+transcripcion/
   app.py          interfaz Gradio
   cli.py          comandos del pipeline
   pipeline.py     audio -> diarizacion -> transcripcion -> salida
@@ -285,8 +290,12 @@ src/
 config/
   diarizer.yaml       configuracion NeMo
   chunk_offsets.json  solo modo legacy
+data/
+  audio/              audios locales ignorados por Git
 examples/
   datos ficticios pequenos para documentar formatos
+output/
+  salidas generadas ignoradas por Git
 tests/
   pruebas unitarias
 ```

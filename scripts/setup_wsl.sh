@@ -35,5 +35,5 @@ PY
 echo
 echo "Listo. Activa el entorno con:  source .venv/bin/activate"
 echo "Smoke test:"
-echo "  python -m src.cli smoke --audio data/audio/mi_audio.mp3 \\"
+echo "  python -m transcripcion.cli smoke --audio data/audio/mi_audio.mp3 \\"
 echo "      --seconds 120 --out output/smoke --model small --language es --batch-size 8"

@@ -1,14 +1,20 @@
 """Interfaz Gradio para el pipeline self-contained de transcripción + diarización.
 
 Uso:
-    python -m src.app
+    python -m transcripcion.app
     python app.py          (desde raíz del proyecto)
 """
 from __future__ import annotations
 
+import asyncio
+import sys
 import threading
 import tempfile
 from pathlib import Path
+
+
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import gradio as gr  # type: ignore
 

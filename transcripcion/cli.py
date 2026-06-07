@@ -15,11 +15,11 @@ Utilidades:
   smoke       recorta el audio y corre el pipeline sobre el clip
 
 Ej (nuevo):
-  python -m src.cli run --audio reunion.mp3 --out output/
-  python -m src.cli run --audio reunion.mp3 --out output/ --model large-v3 --num-speakers 3
+  python -m transcripcion.cli run --audio reunion.mp3 --out output/
+  python -m transcripcion.cli run --audio reunion.mp3 --out output/ --model large-v3 --num-speakers 3
 
 Ej (legacy):
-  python -m src.cli align --rttm output/diarization.rttm \
+  python -m transcripcion.cli align --rttm output/diarization.rttm \
       --transcripts partido/transcripts/csv --out output/
 """
 from __future__ import annotations
@@ -221,7 +221,7 @@ def cmd_smoke(args):
 # --------------------------------------------------------------------------- #
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="src.cli",
+        prog="transcripcion.cli",
         description="Pipeline self-contained de transcripción con detección de hablantes",
     )
     sub = p.add_subparsers(dest="cmd", required=True)

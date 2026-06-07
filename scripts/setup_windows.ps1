@@ -80,8 +80,8 @@ Write-Host ""
 Write-Host "==> Verificacion rapida"
 & $PythonExe --version
 & $PythonExe -c "import torch, torchaudio; print('torch', torch.__version__, '| torchaudio', torchaudio.__version__, '| CUDA disponible:', torch.cuda.is_available(), '|', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
-& $PythonExe -c "from src.diarize import _load_clusterdiarizer; _load_clusterdiarizer(); print('NeMo diarizer import OK')"
-& $PythonExe -m src.cli --help | Out-Null
+& $PythonExe -c "from transcripcion.diarize import _load_clusterdiarizer; _load_clusterdiarizer(); print('NeMo diarizer import OK')"
+& $PythonExe -m transcripcion.cli --help | Out-Null
 Write-Host "CLI OK"
 
 Write-Host ""
@@ -89,4 +89,4 @@ Write-Host "Listo. Activa el entorno con:"
 Write-Host "  .\$Venv\Scripts\Activate.ps1"
 Write-Host ""
 Write-Host "Smoke test sugerido:"
-Write-Host "  python -m src.cli smoke --audio data/audio/mi_audio.mp3 --seconds 120 --out output/smoke --model small --language es --batch-size 4"
+Write-Host "  python -m transcripcion.cli smoke --audio data/audio/mi_audio.mp3 --seconds 120 --out output/smoke --model small --language es --batch-size 4"

@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 
-from src.csv_loader import normalize_frame, parse_time, _read_frame
+from transcripcion.csv_loader import normalize_frame, parse_time, _read_frame
 
 
 # --- formato real: nivel-segmento, headers en español, texto con comas ------ #

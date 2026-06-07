@@ -1,8 +1,8 @@
 """Tests de alineación por solapamiento: casos sintéticos con resultado esperado."""
 import pytest
 
-from src.align import Aligner, assign_speaker, UNKNOWN
-from src.rttm import RttmSegment
+from transcripcion.align import Aligner, assign_speaker, UNKNOWN
+from transcripcion.rttm import RttmSegment
 
 
 def rttm():

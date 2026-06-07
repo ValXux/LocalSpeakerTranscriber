@@ -1,4 +1,4 @@
-"""Asegura que `import src...` funcione al correr pytest desde la raíz del proyecto."""
+"""Asegura que `import transcripcion...` funcione al correr pytest desde la raíz del proyecto."""
 import os
 import sys
 
