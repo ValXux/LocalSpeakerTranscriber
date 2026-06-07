@@ -291,13 +291,5 @@ tests/
   pruebas unitarias
 ```
 
-## Publicacion en GitHub
-
-Antes de publicar:
-
-```powershell
-git status --short
-```
-
-Verifica que no aparezcan archivos reales de `data/`, `output/`, `.venv/`,
-`.venv-win/`, `.venv-test/`, `__pycache__/` ni `.pytest_cache/`.
+## Autor
+- Valentin Fernandez
